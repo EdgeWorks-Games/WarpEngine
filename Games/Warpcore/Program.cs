@@ -20,7 +20,7 @@ namespace Warpcore
 			// We're just creating a client-side game.
 
 			var game = new Client();
-			await game.Task;
+			await game;
 		}
 	}
 }

@@ -8,10 +8,10 @@ namespace WarpEngine
 	public sealed class Loop
 	{
 		private readonly Action<TimeSpan> _tickFunc;
-		private Task _task;
 		private bool _keepRunning;
+		private Task _task;
 
-		public Loop(Action<TimeSpan> tickFunc, TimeSpan minimumDelta)
+		internal Loop(Action<TimeSpan> tickFunc, TimeSpan minimumDelta)
 		{
 			_tickFunc = tickFunc;
 			MinimumDelta = minimumDelta;
@@ -19,12 +19,7 @@ namespace WarpEngine
 
 		public TimeSpan MinimumDelta { get; private set; }
 
-		public Task Task
-		{
-			get { return _task; }
-		}
-
-		public void Start()
+		internal void Start()
 		{
 			_task = Task.Run(() => Run());
 		}
@@ -34,6 +29,11 @@ namespace WarpEngine
 			_keepRunning = false;
 		}
 
+		public void AwaitFinish()
+		{
+			_task.Wait();
+		}
+		
 		private void Run()
 		{
 			var stopwatch = new Stopwatch();

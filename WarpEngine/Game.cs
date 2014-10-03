@@ -1,38 +1,59 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace WarpEngine
 {
 	public abstract class Game
 	{
-		private readonly Task _task;
+		private readonly List<Loop> _loops = new List<Loop>();
 
 		protected Game()
 		{
 			// Initialize defaults
-			Loops = new Collection<Loop>();
-
-			// Start game
-			_task = Task.Run(() => Run());
+			Loops = new ReadOnlyCollection<Loop>(_loops);
 		}
 
-		public Collection<Loop> Loops { get; private set; }
+		public ReadOnlyCollection<Loop> Loops { get; private set; }
 
-		public Task Task
+		public void StartLoop(Action<TimeSpan> tickFunc, TimeSpan minimumDelta)
 		{
-			get { return _task; }
-		}
+			var loop = new Loop(tickFunc, minimumDelta);
 
-		private void Run()
-		{
-			foreach (var loop in Loops)
+			lock (_loops)
 			{
 				loop.Start();
+				_loops.Add(loop);
 			}
+		}
 
-			foreach (var loop in Loops)
+		public TaskAwaiter GetAwaiter()
+		{
+			return Task.Run(() => AwaitFinish()).GetAwaiter();
+		}
+
+		private void AwaitFinish()
+		{
+			while (true)
 			{
-				loop.Task.Wait();
+				Loop loop;
+
+				lock (_loops)
+				{
+					if (_loops.Count != 0)
+						loop = _loops[0];
+					else
+						break;
+				}
+
+				loop.AwaitFinish();
+
+				lock (_loops)
+				{
+					_loops.Remove(loop);
+				}
 			}
 		}
 	}
