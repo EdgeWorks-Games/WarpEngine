@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarpEngine", "WarpEngine\WarpEngine.csproj", "{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{DEAE5603-C045-4032-9890-743F0F7F5AE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warpcore", "Games\Warpcore\Warpcore.csproj", "{E8B47C07-94FD-4F8A-B046-CB3E654C666A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarpEngine.Tests", "WarpEngine.Tests\WarpEngine.Tests.csproj", "{A4AFD725-7297-4441-A112-07A9CE94A519}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8B47C07-94FD-4F8A-B046-CB3E654C666A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B47C07-94FD-4F8A-B046-CB3E654C666A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8B47C07-94FD-4F8A-B046-CB3E654C666A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8B47C07-94FD-4F8A-B046-CB3E654C666A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4AFD725-7297-4441-A112-07A9CE94A519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4AFD725-7297-4441-A112-07A9CE94A519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4AFD725-7297-4441-A112-07A9CE94A519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4AFD725-7297-4441-A112-07A9CE94A519}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8B47C07-94FD-4F8A-B046-CB3E654C666A} = {DEAE5603-C045-4032-9890-743F0F7F5AE8}
+	EndGlobalSection
+EndGlobal
