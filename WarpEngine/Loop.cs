@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,8 +15,9 @@ namespace WarpEngine
 		{
 		}
 
-		public Loop(TimeSpan minimumDelta)
+		public Loop(EventHandler<LoopEventArgs> callback, TimeSpan minimumDelta)
 		{
+			Tick += callback;
 			MinimumDelta = minimumDelta;
 		}
 
@@ -26,7 +28,7 @@ namespace WarpEngine
 			get { return !_task.IsCompleted; }
 		}
 
-		public event EventHandler Tick = (s, e) => { };
+		public event EventHandler<LoopEventArgs> Tick = (s, e) => { };
 
 		public void Start()
 		{
@@ -36,6 +38,11 @@ namespace WarpEngine
 		public void Stop()
 		{
 			_keepRunning = false;
+		}
+
+		public TaskAwaiter GetAwaiter()
+		{
+			return Task.Run(() => AwaitFinish()).GetAwaiter();
 		}
 
 		public void AwaitFinish()
@@ -54,7 +61,7 @@ namespace WarpEngine
 				stopwatch.Restart();
 
 				// Run the function this loop should be ticking
-				Tick(this, EventArgs.Empty /*previousDelta*/);
+				Tick(this, new LoopEventArgs(previousDelta));
 
 				// Sleep until we're at the target
 				while (stopwatch.Elapsed < MinimumDelta)

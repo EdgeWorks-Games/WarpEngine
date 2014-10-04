@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace WarpEngine.Tests
 {
@@ -52,6 +53,33 @@ namespace WarpEngine.Tests
 
 			// Wait till our game object is done
 			await game;
+		}
+
+		[Fact]
+		public async void AwaitFinish_50Ticks_AwaitsLoopFinish()
+		{
+			var count = 0;
+			var game = new Game();
+
+			// Create and set up our test loop
+			var loop = new Loop {MinimumDelta = TimeSpan.FromSeconds(0.0001)};
+			loop.Tick += (s, e) =>
+			{
+				if (count >= 50)
+					loop.Stop();
+
+				count++;
+			};
+
+			// Add and start the loop
+			game.TrackLoop(loop);
+			loop.Start();
+			
+			// Wait till our game object is done
+			await game;
+
+			// Make sure it waited for the loop to end
+			Assert.False(loop.IsRunning);
 		}
 	}
 }
