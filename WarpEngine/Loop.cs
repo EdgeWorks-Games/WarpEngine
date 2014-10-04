@@ -7,19 +7,28 @@ namespace WarpEngine
 {
 	public sealed class Loop
 	{
-		private readonly Action<TimeSpan> _tickFunc;
 		private bool _keepRunning;
 		private Task _task;
 
-		internal Loop(Action<TimeSpan> tickFunc, TimeSpan minimumDelta)
+		public Loop()
 		{
-			_tickFunc = tickFunc;
+		}
+
+		public Loop(TimeSpan minimumDelta)
+		{
 			MinimumDelta = minimumDelta;
 		}
 
-		public TimeSpan MinimumDelta { get; private set; }
+		public TimeSpan MinimumDelta { get; set; }
 
-		internal void Start()
+		public bool IsRunning
+		{
+			get { return !_task.IsCompleted; }
+		}
+
+		public event EventHandler Tick = (s, e) => { };
+
+		public void Start()
 		{
 			_task = Task.Run(() => Run());
 		}
@@ -33,7 +42,7 @@ namespace WarpEngine
 		{
 			_task.Wait();
 		}
-		
+
 		private void Run()
 		{
 			var stopwatch = new Stopwatch();
@@ -45,7 +54,7 @@ namespace WarpEngine
 				stopwatch.Restart();
 
 				// Run the function this loop should be ticking
-				_tickFunc(previousDelta);
+				Tick(this, EventArgs.Empty /*previousDelta*/);
 
 				// Sleep until we're at the target
 				while (stopwatch.Elapsed < MinimumDelta)

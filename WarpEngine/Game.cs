@@ -1,30 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace WarpEngine
 {
-	public abstract class Game
+	public class Game
 	{
 		private readonly List<Loop> _loops = new List<Loop>();
 
-		protected Game()
+		/// <summary>
+		///     Returns true if any loop is currently running.
+		/// </summary>
+		public bool IsRunning
 		{
-			// Initialize defaults
-			Loops = new ReadOnlyCollection<Loop>(_loops);
+			get
+			{
+				lock (_loops)
+				{
+					return _loops.All(l => l.IsRunning);
+				}
+			}
 		}
-
-		public ReadOnlyCollection<Loop> Loops { get; private set; }
-
-		public void StartLoop(Action<TimeSpan> tickFunc, TimeSpan minimumDelta)
+		
+		public void TrackLoop(Loop loop)
 		{
-			var loop = new Loop(tickFunc, minimumDelta);
-
 			lock (_loops)
 			{
-				loop.Start();
 				_loops.Add(loop);
 			}
 		}
@@ -42,18 +44,16 @@ namespace WarpEngine
 
 				lock (_loops)
 				{
-					if (_loops.Count != 0)
-						loop = _loops[0];
-					else
-						break;
+					// Try to find a running loop
+					loop = _loops.FirstOrDefault(l => l.IsRunning);
 				}
 
+				// Couldn't find one? Then we're done!
+				if (loop == null)
+					break;
+
+				// We found one, wait for it to finish
 				loop.AwaitFinish();
-
-				lock (_loops)
-				{
-					_loops.Remove(loop);
-				}
 			}
 		}
 	}
