@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -22,7 +23,18 @@ namespace WarpEngine
 				}
 			}
 		}
-		
+
+		public Loop StartLoop(EventHandler<LoopEventArgs> callback, TimeSpan minimumDelta)
+		{
+			// Create and set up our update loop
+			var loop = new Loop(callback, minimumDelta);
+
+			TrackLoop(loop);
+			loop.Start();
+
+			return loop;
+		}
+
 		public void TrackLoop(Loop loop)
 		{
 			lock (_loops)

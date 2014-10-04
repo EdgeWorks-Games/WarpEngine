@@ -74,12 +74,29 @@ namespace WarpEngine.Tests
 			// Add and start the loop
 			game.TrackLoop(loop);
 			loop.Start();
-			
+
 			// Wait till our game object is done
 			await game;
 
 			// Make sure it waited for the loop to end
 			Assert.False(loop.IsRunning);
+		}
+
+		[Fact]
+		public async void StartLoop_OneLoop_TrackedAndStarted()
+		{
+			var game = new Game();
+
+			// Create and set up our test loop
+			var loop = game.StartLoop((s, e) => { }, TimeSpan.FromSeconds(0.0001));
+
+			// Make sure it's indeed running and tracked
+			Assert.True(loop.IsRunning);
+			Assert.True(game.IsRunning);
+
+			// Stop the loop and wait till our game object is done
+			loop.Stop();
+			await game;
 		}
 	}
 }

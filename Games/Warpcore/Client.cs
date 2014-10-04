@@ -7,17 +7,11 @@ namespace Warpcore
 	{
 		public Client()
 		{
-			// Create and set up our update loop
-			var updateLoop = new Loop(Update, TimeSpan.FromSeconds(1.0/100.0));
-
-			TrackLoop(updateLoop);
-			updateLoop.Start();
+			// Create and set up our update loop (Twice the average framerate)
+			StartLoop(Update, TimeSpan.FromSeconds(1.0/120.0));
 
 			// Create and set up our render loop (As fast as possible with a sane limit)
-			var renderLoop = new Loop(Render, TimeSpan.FromSeconds(1.0/1000.0));
-
-			TrackLoop(renderLoop);
-			renderLoop.Start();
+			StartLoop(Render, TimeSpan.FromSeconds(1.0/1000.0));
 		}
 
 		private void Update(object sender, LoopEventArgs args)
