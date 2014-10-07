@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WarpEngine
+namespace WarpEngine.Graphics
 {
-	public class World
+	public class RenderSystem : SystemBase
 	{
-		public void Add(Entity entity)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

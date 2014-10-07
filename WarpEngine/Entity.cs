@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace WarpEngine
 {
-	public class Entity
+	public sealed class Entity
 	{
-		public void Add(IEntityComponent component)
+		public Entity()
 		{
-			throw new NotImplementedException();
+			Components = new Collection<IEntityComponent>();
+			Children = new Collection<Entity>();
 		}
+
+		public Collection<IEntityComponent> Components { get; set; }
+		public Collection<Entity> Children { get; set; }
 	}
 }

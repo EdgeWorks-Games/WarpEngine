@@ -62,7 +62,7 @@ namespace WarpEngine.Tests
 			var game = new Game();
 
 			// Create and set up our test loop
-			var loop = new Loop {MinimumDelta = TimeSpan.FromSeconds(0.0001)};
+			var loop = new Loop {TargetDelta = TimeSpan.FromSeconds(0.0001)};
 			loop.Tick += (s, e) =>
 			{
 				if (count >= 50)
