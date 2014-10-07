@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CmdOptions.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Entities.cs" />
     <Compile Include="PlayerComponent.cs" />
     <Compile Include="PlayerSystem.cs" />
     <Compile Include="Program.cs" />

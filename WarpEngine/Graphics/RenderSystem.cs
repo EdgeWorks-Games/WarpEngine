@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WarpEngine.Graphics
 {
-	public class RenderSystem : SystemBase
+	public class RenderSystem : EntitySystem
 	{
+		public override void ProcessEntity(Entity entity)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

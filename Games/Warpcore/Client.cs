@@ -16,26 +16,21 @@ namespace Warpcore
 			//var playerSprite = atlas.CreateSprite("./Graphics/player.png");
 			//atlas.Generate();
 
-			var playerEntity = new Entity();
-			playerEntity.Components.Add(new TransformComponent());
-			//playerEntity.Components.Add(new SpriteComponent(playerSprite));
-			playerEntity.Components.Add(new PlayerComponent());
-			_world.Children.Add(playerEntity);
+			_world.Children.Add(Entities.CreatePlayerEntity());
 
-			// Create and set up our update loop (Twice the average VSynced framerate)
-			StartLoop(Update, TimeSpan.FromSeconds(1.0/120.0));
-
-			// Create and set up our render loop (As fast as possible with a sane limit)
+			// Set up our game loops
 			// Bug: Currently, loop deltas don't adjust for how long they actually take to execute.
-			StartLoop(Render, TimeSpan.FromSeconds(1.0/1000.0));
+			StartLoop(Update, TimeSpan.FromSeconds(1.0/120.0));
+			StartLoop(Render, TimeSpan.FromSeconds(1.0/1000.0)); // < 1/1000 is just a sane minimum
 		}
 
 		private void Update(object sender, LoopEventArgs args)
 		{
+			// TODO: Perhaps clone instead of lock to make the world lockless?
 			lock (_world)
 			{
 				Console.WriteLine("Update: " + args.Delta);
-				//_playerSystem.Process(_world);
+				//_playerSystem.ProcessTree(_world);
 			}
 		}
 
@@ -44,7 +39,7 @@ namespace Warpcore
 			lock (_world)
 			{
 				Console.WriteLine("Render: " + args.Delta);
-				//_renderSystem.Process(_world);
+				//_renderSystem.ProcessTree(_world);
 			}
 		}
 	}

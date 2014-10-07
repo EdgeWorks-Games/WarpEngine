@@ -53,9 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SystemBaseTests.cs" />
+    <Compile Include="EntitySystemTests.cs" />
+    <Compile Include="EntityTests.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestComponents.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

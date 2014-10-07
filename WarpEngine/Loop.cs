@@ -41,6 +41,7 @@ namespace WarpEngine
 
 		public void Start()
 		{
+			_keepRunning = true;
 			_task = Task.Run(() => Run());
 		}
 
@@ -51,7 +52,7 @@ namespace WarpEngine
 
 		public TaskAwaiter GetAwaiter()
 		{
-			return Task.Run(() => AwaitFinish()).GetAwaiter();
+			return _task.GetAwaiter();
 		}
 
 		public void AwaitFinish()
@@ -67,7 +68,6 @@ namespace WarpEngine
 			var accumulator = new TimeSpan();
 			var stopwatch = new Stopwatch();
 
-			_keepRunning = true;
 			while (_keepRunning)
 			{
 				// Increase our accumulator with the elapsed time
