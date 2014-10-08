@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WarpEngine;
 
-namespace WarpEngine
+namespace Warpcore
 {
 	public class PlayerComponent : IEntityComponent
 	{
+		public float Speed { get; set; }
 	}
 }

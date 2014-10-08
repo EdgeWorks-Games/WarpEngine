@@ -4,9 +4,14 @@ namespace WarpEngine.Graphics
 {
 	public class RenderSystem : EntitySystem
 	{
+		public RenderSystem()
+		{
+			Filter = e => e.Has<TransformComponent>();
+		}
+
 		public override void ProcessEntity(Entity entity)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine(entity.Get<TransformComponent>().Position);
 		}
 	}
 }

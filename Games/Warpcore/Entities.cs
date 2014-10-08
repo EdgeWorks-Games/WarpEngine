@@ -12,7 +12,10 @@ namespace Warpcore
 				{
 					new TransformComponent(),
 					//new SpriteComponent(playerSprite),
-					new PlayerComponent()
+					new PlayerComponent
+					{
+						Speed = 1
+					}
 				}
 			};
 

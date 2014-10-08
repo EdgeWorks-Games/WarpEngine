@@ -10,13 +10,16 @@ namespace Warpcore
 		private readonly PlayerSystem _playerSystem = new PlayerSystem();
 		private readonly RenderSystem _renderSystem = new RenderSystem();
 
+		private readonly Entity _player;
+
 		public Client()
 		{
 			//var atlas = new SpriteAtlas();
 			//var playerSprite = atlas.CreateSprite("./Graphics/player.png");
 			//atlas.Generate();
 
-			_world.Children.Add(Entities.CreatePlayerEntity());
+			_player = Entities.CreatePlayerEntity();
+			_world.Children.Add(_player);
 
 			// Set up our game loops
 			// Bug: Currently, loop deltas don't adjust for how long they actually take to execute.
@@ -26,11 +29,9 @@ namespace Warpcore
 
 		private void Update(object sender, LoopEventArgs args)
 		{
-			// TODO: Perhaps clone instead of lock to make the world lockless?
 			lock (_world)
 			{
-				Console.WriteLine("Update: " + args.Delta);
-				//_playerSystem.ProcessTree(_world);
+				_playerSystem.ProcessTree(_world);
 			}
 		}
 
@@ -38,8 +39,11 @@ namespace Warpcore
 		{
 			lock (_world)
 			{
-				Console.WriteLine("Render: " + args.Delta);
-				//_renderSystem.ProcessTree(_world);
+				Console.WriteLine("Render():");
+
+				_renderSystem.ProcessTree(_world);
+
+				Console.WriteLine();
 			}
 		}
 	}

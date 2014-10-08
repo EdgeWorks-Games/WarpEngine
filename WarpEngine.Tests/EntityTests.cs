@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace WarpEngine.Tests
 {
@@ -34,12 +33,12 @@ namespace WarpEngine.Tests
 		}
 
 		[Fact]
-		public void Get_ClashingComponent_ThrowsException()
+		public void Get_ClashingComponent_ReturnsNull()
 		{
 			var entity = new Entity();
 			entity.Components.Add(new ComponentB());
 
-			Assert.Throws<InvalidOperationException>(() => entity.Get<ComponentA>());
+			Assert.Null(entity.Get<ComponentA>());
 		}
 	}
 }

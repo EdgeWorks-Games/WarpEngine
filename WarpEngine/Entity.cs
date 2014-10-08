@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace WarpEngine
@@ -15,19 +14,14 @@ namespace WarpEngine
 		public Collection<IEntityComponent> Components { get; set; }
 		public Collection<Entity> Children { get; set; }
 
-		public bool Has<T>()
+		public bool Has<T>() where T : IEntityComponent
 		{
 			return Components.Any(c => c is T);
 		}
 
-		public IEntityComponent Get<T>()
+		public T Get<T>() where T : IEntityComponent
 		{
-			var component = Components.FirstOrDefault(e => e is T);
-
-			if (component == null)
-				throw new InvalidOperationException("Entity does not have component of type \"" + typeof (T) + "\".");
-
-			return component;
+			return Components.OfType<T>().FirstOrDefault();
 		}
 	}
 }
