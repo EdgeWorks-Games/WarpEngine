@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WarpEngine.Graphics
+﻿namespace WarpEngine.Graphics
 {
 	public class RenderSystem : EntitySystem
 	{
@@ -11,7 +9,7 @@ namespace WarpEngine.Graphics
 
 		public override void ProcessEntity(Entity entity)
 		{
-			Console.WriteLine(entity.Get<TransformComponent>().Position);
+			var transform = entity.Get<TransformComponent>();
 		}
 	}
 }
