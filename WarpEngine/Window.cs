@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -10,12 +11,16 @@ namespace WarpEngine
 	{
 		private GameWindow _window;
 
+#if DEBUG
+		private int _threadId;
+#endif
+
 		public bool Exists
 		{
 			get { return _window != null && _window.Exists; }
 		}
 
-		public event EventHandler Closing = (s, e) => { }; 
+		public event EventHandler Closing = (s, e) => { };
 
 		public void ProcessEvents()
 		{
@@ -31,7 +36,16 @@ namespace WarpEngine
 				};
 				_window.Context.MakeCurrent(null);
 				_window.Closing += (s, e) => Closing(this, EventArgs.Empty);
+
+#if DEBUG
+				_threadId = Thread.CurrentThread.ManagedThreadId;
+#endif
 			}
+
+#if DEBUG
+			if (_threadId != Thread.CurrentThread.ManagedThreadId)
+				throw new InvalidOperationException("Can't process events on a different thread than the window was created on.");
+#endif
 
 			// Actually process the events
 			_window.ProcessEvents();

@@ -98,5 +98,23 @@ namespace WarpEngine.Tests
 			loop.Stop();
 			await game;
 		}
+
+		[Fact]
+		public async void StopAllLoops_MultipleLoops_StopsAll()
+		{
+			var game = new Game();
+
+			// Start up our test loops
+			var loopA = game.StartLoop((s, e) => { }, TimeSpan.FromSeconds(0.0001));
+			var loopB = game.StartLoop((s, e) => { }, TimeSpan.FromSeconds(0.0001));
+
+			// Stop the loops and wait till our game object is done
+			game.StopAllLoops();
+			await game;
+
+			// Make sure the loops are stopped
+			Assert.False(loopA.IsRunning);
+			Assert.False(loopB.IsRunning);
+		}
 	}
 }

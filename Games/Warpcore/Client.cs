@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO.Ports;
 using WarpEngine;
 using WarpEngine.Graphics;
 
@@ -15,6 +16,8 @@ namespace Warpcore
 
 		public Client()
 		{
+			_window.Closing += (s, e) => StopAllLoops();
+
 			//var atlas = new SpriteAtlas();
 			//var playerSprite = atlas.CreateSprite("./Graphics/player.png");
 			//atlas.Generate();
@@ -39,6 +42,7 @@ namespace Warpcore
 
 		private void Render(object sender, LoopEventArgs args)
 		{
+			// We can only do rendering with the window if it exists
 			if (!_window.Exists)
 				return;
 

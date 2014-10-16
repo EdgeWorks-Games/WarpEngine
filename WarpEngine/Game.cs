@@ -43,6 +43,12 @@ namespace WarpEngine
 			}
 		}
 
+		public void StopAllLoops()
+		{
+			foreach(var loop in _loops)
+				loop.Stop();
+		}
+
 		public TaskAwaiter GetAwaiter()
 		{
 			return Task.Run(() => AwaitFinish()).GetAwaiter();
