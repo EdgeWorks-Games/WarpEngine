@@ -1,27 +1,56 @@
 ﻿using System;
+using System.Drawing;
 using WarpEngine;
+using WarpEngine.Graphics;
 
 namespace Warpcore
 {
 	public sealed class Client : Game
 	{
+		private readonly Window _window = new Window();
+
+		private readonly Entity _world = new Entity();
+		private readonly PlayerSystem _playerSystem = new PlayerSystem();
+		private readonly RenderSystem _renderSystem = new RenderSystem();
+
 		public Client()
 		{
-			// Create and set up our update loop (Twice the average framerate)
-			StartLoop(Update, TimeSpan.FromSeconds(1.0/120.0));
+			//var atlas = new SpriteAtlas();
+			//var playerSprite = atlas.CreateSprite("./Graphics/player.png");
+			//atlas.Generate();
 
-			// Create and set up our render loop (As fast as possible with a sane limit)
-			StartLoop(Render, TimeSpan.FromSeconds(1.0/1000.0));
+			_world.Children.Add(Entities.CreatePlayerEntity());
+
+			// Set up our game loops
+			// Bug: Currently, loop deltas don't adjust for how long they actually take to execute.
+			StartLoop(Update, TimeSpan.FromSeconds(1.0/120.0));
+			StartLoop(Render, TimeSpan.FromSeconds(1.0/1000.0)); // < 1/1000 is just a sane minimum
 		}
 
 		private void Update(object sender, LoopEventArgs args)
 		{
-			Console.WriteLine("Update: " + args.Delta);
+			_window.ProcessEvents();
+
+			lock (_world)
+			{
+				_playerSystem.ProcessTree(_world);
+			}
 		}
 
 		private void Render(object sender, LoopEventArgs args)
 		{
-			Console.WriteLine("Render: " + args.Delta);
+			if (!_window.Exists)
+				return;
+
+			_window.MakeCurrent();
+			_window.TempClear(Color.CornflowerBlue);
+
+			lock (_world)
+			{
+				_renderSystem.ProcessTree(_world);
+			}
+
+			_window.SwapBuffers();
 		}
 	}
 }

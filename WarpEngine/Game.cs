@@ -24,10 +24,10 @@ namespace WarpEngine
 			}
 		}
 
-		public Loop StartLoop(EventHandler<LoopEventArgs> callback, TimeSpan minimumDelta)
+		public Loop StartLoop(EventHandler<LoopEventArgs> callback, TimeSpan targetDelta)
 		{
 			// Create and set up our update loop
-			var loop = new Loop(callback, minimumDelta);
+			var loop = new Loop(callback, targetDelta);
 
 			TrackLoop(loop);
 			loop.Start();

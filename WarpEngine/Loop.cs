@@ -13,15 +13,24 @@ namespace WarpEngine
 
 		public Loop()
 		{
+			AccumulationLimit = TimeSpan.FromSeconds(0.5);
 		}
 
-		public Loop(EventHandler<LoopEventArgs> callback, TimeSpan minimumDelta)
+		public Loop(EventHandler<LoopEventArgs> callback, TimeSpan targetDelta)
 		{
 			Tick += callback;
-			MinimumDelta = minimumDelta;
+			TargetDelta = targetDelta;
+
+			// Apparently *4 can't be done with a TimeSpan
+			AccumulationLimit = TargetDelta + TargetDelta + TargetDelta + TargetDelta;
 		}
 
-		public TimeSpan MinimumDelta { get; set; }
+		public TimeSpan TargetDelta { get; set; }
+
+		/// <summary>
+		///     The maximum the accumulator will accumulate.
+		/// </summary>
+		public TimeSpan AccumulationLimit { get; set; }
 
 		public bool IsRunning
 		{
@@ -32,6 +41,7 @@ namespace WarpEngine
 
 		public void Start()
 		{
+			_keepRunning = true;
 			_task = Task.Run(() => Run());
 		}
 
@@ -42,7 +52,7 @@ namespace WarpEngine
 
 		public TaskAwaiter GetAwaiter()
 		{
-			return Task.Run(() => AwaitFinish()).GetAwaiter();
+			return _task.GetAwaiter();
 		}
 
 		public void AwaitFinish()
@@ -52,28 +62,47 @@ namespace WarpEngine
 
 		private void Run()
 		{
-			var stopwatch = new Stopwatch();
-			var previousDelta = MinimumDelta;
+			// TODO: Make the loop adjust the target delta dynamically to adjust for performance issues.
+			// Right now it will just run slower, since AccumulationLimit simply clamps the target.
 
-			_keepRunning = true;
+			var accumulator = new TimeSpan();
+			var stopwatch = new Stopwatch();
+
 			while (_keepRunning)
 			{
+				// Increase our accumulator with the elapsed time
+				accumulator += stopwatch.Elapsed;
 				stopwatch.Restart();
 
-				// Run the function this loop should be ticking
-				Tick(this, new LoopEventArgs(previousDelta));
-
-				// Sleep until we're at the target
-				while (stopwatch.Elapsed < MinimumDelta)
+				// Check if the accumulator has gone over our target
+				if (accumulator > TargetDelta)
 				{
-					if (Thread.Yield())
-						continue;
+					// It has, execute a tick
+					Tick(this, new LoopEventArgs(TargetDelta));
+					accumulator -= TargetDelta;
+				}
+				else
+				{
+					// It hasn't yet, so we need to calculate how long till it will
+					var targetElapsed = TargetDelta - accumulator;
 
-					// We couldn't yield, just sleep a bit
-					Thread.Sleep(0);
+					// And wait till that point
+					while (stopwatch.Elapsed < targetElapsed)
+					{
+						// Use yield to give the rest of our thread's time to another thread
+						if (Thread.Yield())
+							continue;
+
+						// We couldn't yield, sleep a bit instead
+						Thread.Sleep(0);
+					}
 				}
 
-				previousDelta = stopwatch.Elapsed;
+				// Limit accumulator to the set limit
+				if (accumulator > AccumulationLimit)
+				{
+					accumulator = AccumulationLimit;
+				}
 			}
 		}
 	}
