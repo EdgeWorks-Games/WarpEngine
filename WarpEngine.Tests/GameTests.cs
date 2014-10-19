@@ -100,6 +100,23 @@ namespace WarpEngine.Tests
 		}
 
 		[Fact]
+		public async void StartLoop_OneLoop_StartCallbackCalled()
+		{
+			var called = false;
+			var game = new Game();
+
+			// Create and set up our test loop
+			var loop = game.StartLoop((s, e) => { }, TimeSpan.FromSeconds(0.0001), (s, e) => called = true);
+
+			// Stop the loop and wait till our game object is done
+			loop.Stop();
+			await game;
+
+			// Make sure the start callback was called
+			Assert.True(called);
+		}
+
+		[Fact]
 		public async void StopAllLoops_MultipleLoops_StopsAll()
 		{
 			var game = new Game();

@@ -1,0 +1,12 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System" #>
+<#@ include file="..\Vectors.ttinclude" #>
+using System;
+
+namespace WarpEngine
+{
+<#
+	Vector2Struct("ScreenPosition", "float", new string[]{});
+#>
+}

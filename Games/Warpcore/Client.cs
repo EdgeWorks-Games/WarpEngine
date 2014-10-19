@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
-using System.IO.Ports;
 using WarpEngine;
+using WarpEngine.Basic;
 using WarpEngine.Graphics;
 
 namespace Warpcore
@@ -12,7 +12,7 @@ namespace Warpcore
 
 		private readonly Entity _world = new Entity();
 		private readonly PlayerSystem _playerSystem = new PlayerSystem();
-		private readonly RenderSystem _renderSystem = new RenderSystem();
+		private readonly RenderSystem<TransformComponent> _renderSystem = new RenderSystem<TransformComponent>();
 
 		public Client()
 		{

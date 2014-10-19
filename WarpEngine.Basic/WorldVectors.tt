@@ -1,0 +1,17 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System" #>
+<#@ include file="..\WarpEngine\Vectors.ttinclude" #>
+namespace WarpEngine.Basic
+{
+<#
+	Vector2Struct("WorldPosition", "float", new[]
+	{
+		"WorldDistance"
+	});
+	Vector2Struct("WorldDistance", "float", new[]
+	{
+		"WorldDistance"
+	});
+#>
+}

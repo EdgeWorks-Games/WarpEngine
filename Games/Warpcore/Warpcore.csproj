@@ -38,9 +38,6 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OpenTK.1.1.1589.5942\lib\NET40\OpenTK.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -64,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\WarpEngine.Basic\WarpEngine.Basic.csproj">
+      <Project>{2E592574-DBB6-449C-8A4C-C2F7556E1F19}</Project>
+      <Name>WarpEngine.Basic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WarpEngine\WarpEngine.csproj">
       <Project>{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}</Project>
       <Name>WarpEngine</Name>

@@ -20,6 +20,11 @@ namespace WarpEngine
 			get { return _window != null && _window.Exists; }
 		}
 
+		public bool IsCurrent
+		{
+			get { return _window.Context.IsCurrent; }
+		}
+
 		public event EventHandler Closing = (s, e) => { };
 
 		public void ProcessEvents()
@@ -53,6 +58,9 @@ namespace WarpEngine
 
 		public void MakeCurrent()
 		{
+			if (_window.Context.IsCurrent)
+				return;
+
 			_window.MakeCurrent();
 		}
 

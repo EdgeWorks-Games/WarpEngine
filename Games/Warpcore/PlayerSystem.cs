@@ -1,5 +1,5 @@
-﻿using OpenTK;
-using WarpEngine;
+﻿using WarpEngine;
+using WarpEngine.Basic;
 
 namespace Warpcore
 {
@@ -15,7 +15,7 @@ namespace Warpcore
 			var transform = entity.Get<TransformComponent>();
 			var player = entity.Get<PlayerComponent>();
 
-			transform.Position += new Vector2(player.Speed, 0);
+			transform.Position += new WorldDistance(player.Speed, 0);
 		}
 	}
 }

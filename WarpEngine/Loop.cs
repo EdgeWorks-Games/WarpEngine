@@ -25,6 +25,12 @@ namespace WarpEngine
 			AccumulationLimit = TargetDelta + TargetDelta + TargetDelta + TargetDelta;
 		}
 
+		public Loop(EventHandler<LoopEventArgs> callback, TimeSpan targetDelta, EventHandler startCallback)
+			:this(callback, targetDelta)
+		{
+			LoopStart += startCallback;
+		}
+
 		public TimeSpan TargetDelta { get; set; }
 
 		/// <summary>
@@ -38,6 +44,8 @@ namespace WarpEngine
 		}
 
 		public event EventHandler<LoopEventArgs> Tick = (s, e) => { };
+
+		public event EventHandler LoopStart = (s, e) => { };
 
 		public void Start()
 		{
@@ -62,6 +70,8 @@ namespace WarpEngine
 
 		private void Run()
 		{
+			LoopStart(this, EventArgs.Empty);
+
 			// TODO: Make the loop adjust the target delta dynamically to adjust for performance issues.
 			// Right now it will just run slower, since AccumulationLimit simply clamps the target.
 
