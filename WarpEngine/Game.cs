@@ -5,26 +5,26 @@ using System.Threading;
 
 namespace WarpEngine
 {
-	public class Game
+	public sealed class Game
 	{
+		private readonly Action<Game> _initializer;
 		private readonly List<Loop> _loops = new List<Loop>();
 		private readonly Thread _thread;
 		private bool _keepRunning = true;
 
-		public Game()
+		public Game(Action<Game> initializer)
 		{
+			_initializer = initializer;
 			_thread = new Thread(Run) {Name = "Game Thread"};
 			_thread.Start();
 		}
 
 		public bool IsRunning { get; private set; }
 
-		public event EventHandler Initialize = (s, e) => { };
-
 		private void Run()
 		{
 			// Initialize our game
-			Initialize(this, EventArgs.Empty);
+			_initializer(this);
 
 			// Run our loop
 			var stopwatch = new Stopwatch();
@@ -46,10 +46,10 @@ namespace WarpEngine
 			}
 		}
 
-		public Loop CreateLoop(EventHandler<LoopEventArgs> callback, TimeSpan targetDelta)
+		public Loop CreateLoop(Action tick, TimeSpan targetDelta)
 		{
 			// Create and set up our update loop
-			var loop = new Loop(callback, targetDelta);
+			var loop = new Loop(tick, targetDelta);
 
 			AddLoop(loop);
 

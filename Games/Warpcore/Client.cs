@@ -6,53 +6,65 @@ using WarpEngine.Graphics;
 
 namespace Warpcore
 {
-	public sealed class Client : Game
+	public static class Client
 	{
-		private readonly PlayerSystem _playerSystem = new PlayerSystem();
-		private readonly RenderSystem<TransformComponent> _renderSystem = new RenderSystem<TransformComponent>();
-		private readonly Entity _world = new Entity();
-		private Window _window;
-
-		public Client()
+		public static Game Create()
 		{
-			Initialize += OnInitialize;
+			return new Game(Initialize);
 		}
 
-		private void OnInitialize(object sender, EventArgs args)
+		private static void Initialize(Game game)
 		{
-			_window = new Window();
-			_window.Closing += (s, e) => Stop();
+			var data = new Data();
+
+			// Initialize our entity systems
+			data.PlayerSystem = new PlayerSystem();
+			data.RenderSystem = new RenderSystem<TransformComponent>();
 
 			//var atlas = new SpriteAtlas();
 			//var playerSprite = atlas.CreateSprite("./Graphics/player.png");
 			//atlas.Generate();
 
-			_world.Children.Add(Entities.CreatePlayerEntity());
+			data.World = new Entity();
+			data.World.Children.Add(Entities.CreatePlayerEntity());
 
 			// Set up our game loops
 			// Bug: Currently, loop deltas don't adjust for how long they actually take to execute.
-			CreateLoop(Update, TimeSpan.FromSeconds(1.0 / 120.0));
-			CreateLoop(Render, TimeSpan.FromSeconds(1.0 / 1000.0)); // < 1/1000 is just a sane minimum
+			game.CreateLoop(() => Update(game, data), TimeSpan.FromSeconds(1.0/120.0));
+			game.CreateLoop(() => Render(game, data), TimeSpan.FromSeconds(1.0/1000.0)); // < 1/1000 is just a sane minimum
+
+			// Create our game's window (this is where the window will be opened)
+			data.Window = new Window();
+			data.Window.Closing += (s, e) => game.Stop();
 		}
 
-		private void Update(object sender, LoopEventArgs args)
+		private static void Update(Game game, Data data)
 		{
-			_window.ProcessEvents();
+			data.Window.ProcessEvents();
 
-			_playerSystem.ProcessTree(_world);
+			data.PlayerSystem.ProcessTree(data.World);
 		}
 
-		private void Render(object sender, LoopEventArgs args)
+		private static void Render(Game game, Data data)
 		{
 			// We can only do rendering with the window if it exists
-			if (!_window.Exists)
+			if (!data.Window.Exists)
 				return;
 
-			_window.TempClear(Color.CornflowerBlue);
+			data.Window.TempClear(Color.CornflowerBlue);
 
-			_renderSystem.ProcessTree(_world);
+			data.RenderSystem.ProcessTree(data.World);
 
-			_window.SwapBuffers();
+			data.Window.SwapBuffers();
+		}
+
+		private class Data
+		{
+			public Window Window { get; set; }
+			public Entity World { get; set; }
+
+			public PlayerSystem PlayerSystem { get; set; }
+			public RenderSystem<TransformComponent> RenderSystem { get; set; }
 		}
 	}
 }

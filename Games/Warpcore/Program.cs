@@ -13,7 +13,7 @@ namespace Warpcore
 			// Right now we're not doing anything with the flags.
 			// We're just creating a client-side game.
 
-			var game = new Client();
+			var game = Client.Create();
 			game.Join();
 		}
 	}
