@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
 
@@ -8,17 +8,19 @@ namespace WarpEngine
 	public sealed class Game
 	{
 		private readonly Action<Game> _initializer;
-		private readonly List<Loop> _loops = new List<Loop>();
 		private readonly Thread _thread;
 		private bool _keepRunning = true;
 
 		public Game(Action<Game> initializer)
 		{
+			Loops = new Collection<Loop>();
+
 			_initializer = initializer;
 			_thread = new Thread(Run) {Name = "Game Thread"};
 			_thread.Start();
 		}
 
+		public Collection<Loop> Loops { get; set; } 
 		public bool IsRunning { get; private set; }
 
 		private void Run()
@@ -35,7 +37,10 @@ namespace WarpEngine
 				stopwatch.Restart();
 
 				// Notify all loops of the time passed
-				_loops.ForEach(l => l.NotifyTimePassed(elapsed));
+				foreach (var loop in Loops)
+				{
+					loop.NotifyTimePassed(elapsed);
+				}
 
 				// Use yield to give the rest of our thread's time to another thread
 				if (!Thread.Yield())
@@ -43,24 +48,6 @@ namespace WarpEngine
 					// We couldn't yield, sleep a bit instead
 					Thread.Sleep(0);
 				}
-			}
-		}
-
-		public Loop CreateLoop(Action tick, TimeSpan targetDelta)
-		{
-			// Create and set up our update loop
-			var loop = new Loop(tick, targetDelta);
-
-			AddLoop(loop);
-
-			return loop;
-		}
-
-		public void AddLoop(Loop loop)
-		{
-			lock (_loops)
-			{
-				_loops.Add(loop);
 			}
 		}
 
