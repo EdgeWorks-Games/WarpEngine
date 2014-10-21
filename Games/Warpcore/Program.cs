@@ -1,16 +1,10 @@
-﻿using System.Threading.Tasks;
-using CommandLine;
+﻿using CommandLine;
 
 namespace Warpcore
 {
 	internal static class Program
 	{
 		private static void Main(string[] args)
-		{
-			MainAsync(args).Wait();
-		}
-
-		private static async Task MainAsync(string[] args)
 		{
 			var options = new CmdOptions();
 			if (!Parser.Default.ParseArguments(args, options))
@@ -20,7 +14,7 @@ namespace Warpcore
 			// We're just creating a client-side game.
 
 			var game = new Client();
-			await game;
+			game.Join();
 		}
 	}
 }

@@ -1,44 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Threading;
 
 namespace WarpEngine
 {
 	public class Game
 	{
 		private readonly List<Loop> _loops = new List<Loop>();
+		private readonly Thread _thread;
+		private bool _keepRunning = true;
 
-		/// <summary>
-		///     Returns true if any loop is currently running.
-		/// </summary>
-		public bool IsRunning
+		public Game()
 		{
-			get
+			_thread = new Thread(Run) {Name = "Game Thread"};
+			_thread.Start();
+		}
+
+		public bool IsRunning { get; private set; }
+
+		public event EventHandler Initialize = (s, e) => { };
+
+		private void Run()
+		{
+			// Initialize our game
+			Initialize(this, EventArgs.Empty);
+
+			// Run our loop
+			var stopwatch = new Stopwatch();
+			while (_keepRunning)
 			{
-				lock (_loops)
+				// Get the elapsed time since last check
+				var elapsed = stopwatch.Elapsed;
+				stopwatch.Restart();
+
+				// Notify all loops of the time passed
+				_loops.ForEach(l => l.NotifyTimePassed(elapsed));
+
+				// Use yield to give the rest of our thread's time to another thread
+				if (!Thread.Yield())
 				{
-					return _loops.All(l => l.IsRunning);
+					// We couldn't yield, sleep a bit instead
+					Thread.Sleep(0);
 				}
 			}
 		}
 
-		public Loop StartLoop(EventHandler<LoopEventArgs> callback, TimeSpan targetDelta, EventHandler startCallback = null)
+		public Loop CreateLoop(EventHandler<LoopEventArgs> callback, TimeSpan targetDelta)
 		{
 			// Create and set up our update loop
 			var loop = new Loop(callback, targetDelta);
 
-			if (startCallback != null)
-				loop.LoopStart += startCallback;
-
-			TrackLoop(loop);
-			loop.Start();
+			AddLoop(loop);
 
 			return loop;
 		}
 
-		public void TrackLoop(Loop loop)
+		public void AddLoop(Loop loop)
 		{
 			lock (_loops)
 			{
@@ -46,36 +64,14 @@ namespace WarpEngine
 			}
 		}
 
-		public void StopAllLoops()
+		public void Stop()
 		{
-			foreach(var loop in _loops)
-				loop.Stop();
+			_keepRunning = false;
 		}
 
-		public TaskAwaiter GetAwaiter()
+		public void Join()
 		{
-			return Task.Run(() => AwaitFinish()).GetAwaiter();
-		}
-
-		private void AwaitFinish()
-		{
-			while (true)
-			{
-				Loop loop;
-
-				lock (_loops)
-				{
-					// Try to find a running loop
-					loop = _loops.FirstOrDefault(l => l.IsRunning);
-				}
-
-				// Couldn't find one? Then we're done!
-				if (loop == null)
-					break;
-
-				// We found one, wait for it to finish
-				loop.AwaitFinish();
-			}
+			_thread.Join();
 		}
 	}
 }
