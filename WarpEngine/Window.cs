@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace WarpEngine
 {
-	public class Window
+	public class Window : IDisposable
 	{
 		private readonly GameWindow _window;
 
@@ -30,6 +30,11 @@ namespace WarpEngine
 		public bool IsCurrent
 		{
 			get { return _window.Context.IsCurrent; }
+		}
+
+		public void Dispose()
+		{
+			_window.Dispose();
 		}
 
 		public event EventHandler Closing = (s, e) => { };

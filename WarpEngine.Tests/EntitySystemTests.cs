@@ -1,5 +1,4 @@
-﻿using Moq;
-using Xunit;
+﻿using Xunit;
 
 namespace WarpEngine.Tests
 {
@@ -20,17 +19,22 @@ namespace WarpEngine.Tests
 			root.Children.Add(clashingEntity);
 
 			// Set up our system
-			var system = new Mock<EntitySystem>();
-			var processFunc = system.Setup(s => s.ProcessEntity(It.IsAny<Entity>()));
-			processFunc.Callback<Entity>(e => Assert.Same(matchingEntity, e));
-
-			system.Object.Filter = e => e.Has<ComponentA>();
+			var ran = false;
+			var system = new EntitySystem
+			{
+				Processor = (e) =>
+				{
+					Assert.Same(matchingEntity, e);
+					ran = true;
+				},
+				Filter = e => e.Has<ComponentA>()
+			};
 
 			// Run our system
-			system.Object.ProcessTree(root);
+			system.Process(root);
 
 			// Make sure our test was run
-			system.Verify(s => s.ProcessEntity(It.IsAny<Entity>()), Times.Once);
+			Assert.True(ran);
 		}
 
 		[Fact]
@@ -49,17 +53,22 @@ namespace WarpEngine.Tests
 			clashingEntity.Children.Add(matchingEntity);
 
 			// Set up our system
-			var system = new Mock<EntitySystem>();
-			var processFunc = system.Setup(s => s.ProcessEntity(It.IsAny<Entity>()));
-			processFunc.Callback<Entity>(e => Assert.Same(matchingEntity, e));
-
-			system.Object.Filter = e => e.Has<ComponentA>();
+			var ran = false;
+			var system = new EntitySystem
+			{
+				Processor = e =>
+				{
+					Assert.Same(matchingEntity, e);
+					ran = true;
+				},
+				Filter = e => e.Has<ComponentA>()
+			};
 
 			// Run our system
-			system.Object.ProcessTree(root);
+			system.Process(root);
 
 			// Make sure our test was run
-			system.Verify(s => s.ProcessEntity(It.IsAny<Entity>()), Times.Once);
+			Assert.True(ran);
 		}
 	}
 }

@@ -40,5 +40,31 @@ namespace WarpEngine.Tests
 
 			Assert.Null(entity.Get<ComponentA>());
 		}
+
+		[Fact]
+		public void Remove_MatchingComponent_RemovesComponent()
+		{
+			var entity = new Entity();
+
+			entity.Components.Add(new ComponentA());
+			entity.Components.Add(new ComponentB());
+
+			entity.Remove<ComponentA>();
+
+			Assert.Null(entity.Get<ComponentA>());
+			Assert.NotNull(entity.Get<ComponentB>());
+		}
+
+		[Fact]
+		public void Remove_ClashingComponent_DoesNothing()
+		{
+			var entity = new Entity();
+
+			entity.Components.Add(new ComponentB());
+
+			entity.Remove<ComponentA>();
+
+			Assert.NotNull(entity.Get<ComponentB>());
+		}
 	}
 }

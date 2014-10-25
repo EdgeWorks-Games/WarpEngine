@@ -52,6 +52,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="PlayerComponent.cs" />
+    <Compile Include="TempDisposerSystem.cs" />
     <Compile Include="PlayerSystem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,16 +60,23 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Sprites\Human.pyxel" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WarpEngine.Basic\WarpEngine.Basic.csproj">
-      <Project>{2E592574-DBB6-449C-8A4C-C2F7556E1F19}</Project>
-      <Name>WarpEngine.Basic</Name>
+    <ProjectReference Include="..\..\WarpEngine.Basic2D\WarpEngine.Basic2D.csproj">
+      <Project>{1C435116-CBC3-4CFD-B7A6-5005C13C3D9E}</Project>
+      <Name>WarpEngine.Basic2D</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\WarpEngine\WarpEngine.csproj">
       <Project>{E26BC232-4A0D-4963-9C4E-686C17BD6AD2}</Project>
       <Name>WarpEngine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Sprites\Human.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

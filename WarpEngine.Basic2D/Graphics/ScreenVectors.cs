@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace WarpEngine
+namespace WarpEngine.Basic2D.Graphics
 {
 	public struct ScreenPosition
 	{

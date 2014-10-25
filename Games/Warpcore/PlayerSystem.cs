@@ -1,16 +1,20 @@
 ﻿using WarpEngine;
-using WarpEngine.Basic;
+using WarpEngine.Basic2D;
 
 namespace Warpcore
 {
-	public class PlayerSystem : EntitySystem
+	public static class PlayerSystem
 	{
-		public PlayerSystem()
+		public static EntitySystem Create()
 		{
-			Filter = e => e.Has<TransformComponent>() && e.Has<PlayerComponent>();
+			return new EntitySystem
+			{
+				Filter = e => e.Has<TransformComponent>() && e.Has<PlayerComponent>(),
+				Processor = Process
+			};
 		}
 
-		public override void ProcessEntity(Entity entity)
+		private static void Process(Entity entity)
 		{
 			var transform = entity.Get<TransformComponent>();
 			var player = entity.Get<PlayerComponent>();

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WarpEngine.Basic")]
+[assembly: AssemblyTitle("WarpEngine.Basic2D")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WarpEngine.Basic")]
+[assembly: AssemblyProduct("WarpEngine.Basic2D")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("40cfdb78-28ef-4083-86a8-0be7c355cd01")]
+[assembly: Guid("37be415f-479a-4fd9-ad50-c13fba5708c7")]
 
 // Version information for an assembly consists of the following four values:
 //

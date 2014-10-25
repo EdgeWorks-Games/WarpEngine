@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using WarpEngine;
-using WarpEngine.Basic;
-using WarpEngine.Graphics;
+using WarpEngine.Basic2D.Graphics;
 
 namespace Warpcore
 {
@@ -25,27 +24,35 @@ namespace Warpcore
 			engine.Window.Closing += (s, e) => game.Stop();
 
 			// Initialize our entity systems
-			systems.PlayerSystem = new PlayerSystem();
-			systems.RenderSystem = new RenderSystem<TransformComponent>();
+			systems.PlayerSystem = PlayerSystem.Create();
+			systems.RenderSystem = RenderSystem.Create();
 
-			//var atlas = new SpriteAtlas();
-			//var playerSprite = atlas.CreateSprite("./Graphics/player.png");
-			//atlas.Generate();
-
+			// Create our test world
 			data.World = new Entity();
 			data.World.Children.Add(Entities.CreatePlayerEntity());
 
 			// Set up our game loops
-			// Bug: Currently, loop deltas don't adjust for how long they actually take to execute.
 			game.Loops.Add(new Loop(() => Update(engine, systems, data), TimeSpan.FromSeconds(1.0/120.0)));
 			game.Loops.Add(new Loop(() => Render(engine, systems, data), TimeSpan.FromSeconds(1.0/60.0)));
+
+			// Make sure our resources are cleared afterwards
+			game.Uninitialize += (s, e) => Uninitialize(engine, data);
+		}
+
+		private static void Uninitialize(Engine engine, Data data)
+		{
+			// This disposes our sprites for now, eventually the renderer will have to do this
+			var system = TempDisposerSystem.Create();
+			system.Process(data.World);
+
+			engine.Window.Dispose();
 		}
 
 		private static void Update(Engine engine, Systems systems, Data data)
 		{
 			engine.Window.ProcessEvents();
 
-			systems.PlayerSystem.ProcessTree(data.World);
+			systems.PlayerSystem.Process(data.World);
 		}
 
 		private static void Render(Engine engine, Systems systems, Data data)
@@ -56,7 +63,7 @@ namespace Warpcore
 
 			engine.Window.TempClear(Color.CornflowerBlue);
 
-			systems.RenderSystem.ProcessTree(data.World);
+			systems.RenderSystem.Process(data.World);
 
 			engine.Window.SwapBuffers();
 		}
@@ -74,8 +81,8 @@ namespace Warpcore
 
 		public class Systems
 		{
-			public PlayerSystem PlayerSystem { get; set; }
-			public RenderSystem<TransformComponent> RenderSystem { get; set; }
+			public EntitySystem PlayerSystem { get; set; }
+			public EntitySystem RenderSystem { get; set; }
 		}
 	}
 }

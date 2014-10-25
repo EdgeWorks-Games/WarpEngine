@@ -1,10 +1,10 @@
 ﻿<#@ template debug="true" hostSpecific="true" #>
 <#@ output extension=".cs" #>
 <#@ import namespace="System" #>
-<#@ include file="..\Vectors.ttinclude" #>
+<#@ include file="..\..\WarpEngine\Vectors.ttinclude" #>
 using System;
 
-namespace WarpEngine
+namespace WarpEngine.Basic2D.Graphics
 {
 <#
 	Vector2Struct("ScreenPosition", "float", new string[]{});

@@ -2,26 +2,30 @@
 
 namespace WarpEngine
 {
-	public abstract class EntitySystem
+	public sealed class EntitySystem
 	{
-		protected EntitySystem()
+		public EntitySystem()
 		{
 			Filter = e => true;
 		}
 
 		public Func<Entity, bool> Filter { get; set; }
+		public Action<Entity> Processor { get; set; }
 
-		public void ProcessTree(Entity root)
+		public void Process(Entity root)
+		{
+			ProcessTree(root);
+		}
+
+		private void ProcessTree(Entity root)
 		{
 			foreach (var entity in root.Children)
 			{
 				if (Filter(entity))
-					ProcessEntity(entity);
+					Processor(entity);
 
 				ProcessTree(entity);
 			}
 		}
-
-		public abstract void ProcessEntity(Entity entity);
 	}
 }

@@ -1,5 +1,5 @@
 ﻿
-namespace WarpEngine.Basic
+namespace WarpEngine.Basic2D
 {
 	public struct WorldPosition
 	{

@@ -45,15 +45,6 @@
   <ItemGroup>
     <Compile Include="Entity.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Graphics\RenderSystem.cs" />
-    <Compile Include="Graphics\Sprite.cs" />
-    <Compile Include="Graphics\SpriteAtlas.cs" />
-    <Compile Include="Graphics\SpriteComponent.cs" />
-    <Compile Include="Graphics\ScreenVectors.cs">
-      <DependentUpon>ScreenVectors.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="IEntityComponent.cs" />
     <Compile Include="Loop.cs" />
     <Compile Include="LoopEventArgs.cs" />
@@ -63,10 +54,6 @@
     <Compile Include="Window.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Graphics\ScreenVectors.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ScreenVectors.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="Vectors.ttinclude" />
   </ItemGroup>

@@ -14,14 +14,22 @@ namespace WarpEngine
 		public Collection<IEntityComponent> Components { get; set; }
 		public Collection<Entity> Children { get; set; }
 
-		public bool Has<T>() where T : IEntityComponent
+		public bool Has<T>() where T : class, IEntityComponent
 		{
 			return Components.Any(c => c is T);
 		}
 
-		public T Get<T>() where T : IEntityComponent
+		public T Get<T>() where T : class, IEntityComponent
 		{
 			return Components.OfType<T>().FirstOrDefault();
+		}
+
+		public void Remove<T>() where T : class, IEntityComponent
+		{
+			var entity = Get<T>();
+
+			if (entity != null)
+				Components.Remove(entity);
 		}
 	}
 }

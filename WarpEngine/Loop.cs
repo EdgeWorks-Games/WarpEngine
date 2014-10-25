@@ -25,6 +25,8 @@ namespace WarpEngine
 
 		public void NotifyTimePassed(TimeSpan elapsed)
 		{
+			// Bug: Currently, loop deltas don't adjust for how long they actually take to execute.
+
 			// Add the time to our internal accumulator, limiting it to our set limit
 			_accumulator = WarpMath.Min(_accumulator + elapsed, AccumulationLimit);
 

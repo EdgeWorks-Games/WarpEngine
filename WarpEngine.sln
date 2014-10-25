@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warpcore", "Games\Warpcore\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarpEngine.Tests", "WarpEngine.Tests\WarpEngine.Tests.csproj", "{A4AFD725-7297-4441-A112-07A9CE94A519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarpEngine.Basic", "WarpEngine.Basic\WarpEngine.Basic.csproj", "{2E592574-DBB6-449C-8A4C-C2F7556E1F19}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarpEngine.Basic2D", "WarpEngine.Basic2D\WarpEngine.Basic2D.csproj", "{1C435116-CBC3-4CFD-B7A6-5005C13C3D9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +31,10 @@ Global
 		{A4AFD725-7297-4441-A112-07A9CE94A519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4AFD725-7297-4441-A112-07A9CE94A519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4AFD725-7297-4441-A112-07A9CE94A519}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E592574-DBB6-449C-8A4C-C2F7556E1F19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E592574-DBB6-449C-8A4C-C2F7556E1F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E592574-DBB6-449C-8A4C-C2F7556E1F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E592574-DBB6-449C-8A4C-C2F7556E1F19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C435116-CBC3-4CFD-B7A6-5005C13C3D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C435116-CBC3-4CFD-B7A6-5005C13C3D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C435116-CBC3-4CFD-B7A6-5005C13C3D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C435116-CBC3-4CFD-B7A6-5005C13C3D9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

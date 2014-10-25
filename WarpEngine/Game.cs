@@ -20,8 +20,10 @@ namespace WarpEngine
 			_thread.Start();
 		}
 
-		public Collection<Loop> Loops { get; set; } 
+		public Collection<Loop> Loops { get; set; }
 		public bool IsRunning { get; private set; }
+
+		public event EventHandler Uninitialize = (s, e) => { };
 
 		private void Run()
 		{
@@ -49,6 +51,8 @@ namespace WarpEngine
 					Thread.Sleep(0);
 				}
 			}
+
+			Uninitialize(this, EventArgs.Empty);
 		}
 
 		public void Stop()

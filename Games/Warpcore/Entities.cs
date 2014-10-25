@@ -1,5 +1,6 @@
 ﻿using WarpEngine;
-using WarpEngine.Basic;
+using WarpEngine.Basic2D;
+using WarpEngine.Basic2D.Graphics;
 
 namespace Warpcore
 {
@@ -12,7 +13,10 @@ namespace Warpcore
 				Components =
 				{
 					new TransformComponent(),
-					//new SpriteComponent(playerSprite),
+					new SpriteComponent
+					{
+						Sprite = new Sprite("Sprites/Human.png")
+					},
 					new PlayerComponent
 					{
 						Speed = 1

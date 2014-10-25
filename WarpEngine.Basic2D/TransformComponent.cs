@@ -1,4 +1,4 @@
-﻿namespace WarpEngine.Basic
+﻿namespace WarpEngine.Basic2D
 {
 	public class TransformComponent : IEntityComponent
 	{
